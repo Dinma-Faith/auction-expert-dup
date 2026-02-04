@@ -20,5 +20,5 @@ export interface Lot {
   color?: string;
   saleState?: string;
   hasKeys?: boolean;
-  [key: string]: any; // This is for extra fields from API
+  [key: string]: any;
 }

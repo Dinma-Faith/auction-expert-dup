@@ -69,8 +69,7 @@ export default function RegisterForm() {
 
     if (!termsChecked)
       return setMessage("You must accept the terms & conditions.");
-    if (email !== confirmEmail)
-      return setMessage("Emails do not match.");
+    if (email !== confirmEmail) return setMessage("Emails do not match.");
     if (password !== confirmPassword)
       return setMessage("Passwords do not match.");
     if (!isValidPassword(password))
@@ -85,7 +84,7 @@ export default function RegisterForm() {
         address.trim(),
         city.trim(),
         country.trim(),
-        password
+        password,
       );
 
       setAuthTokens(data.accessToken, data.refreshToken);
@@ -101,11 +100,15 @@ export default function RegisterForm() {
       <CardContent className="space-y-8 p-8 text-muted-foreground">
         <form className="space-y-8" onSubmit={handleRegister}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[ 
+            {[
               { label: "First Name", value: firstName, setValue: setFirstName },
               { label: "Last Name", value: lastName, setValue: setLastName },
               { label: "E-Mail", value: email, setValue: setEmail },
-              { label: "Confirm E-Mail", value: confirmEmail, setValue: setConfirmEmail },
+              {
+                label: "Confirm E-Mail",
+                value: confirmEmail,
+                setValue: setConfirmEmail,
+              },
               { label: "Address", value: address, setValue: setAddress },
               { label: "City", value: city, setValue: setCity },
             ].map(({ label, value, setValue }) => (
@@ -138,8 +141,8 @@ export default function RegisterForm() {
             <div className="space-y-2">
               <Label className="text-sm">Country</Label>
               <Select value={country} onValueChange={setCountry}>
-                <SelectTrigger className="h-12 w-full">
-                  <SelectValue />
+                <SelectTrigger className="w-full h-12 text-base flex items-center px-3">
+                  <SelectValue placeholder="Select your country" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Nigeria">Nigeria</SelectItem>
@@ -152,20 +155,21 @@ export default function RegisterForm() {
             {/* Password */}
             <div className="space-y-2 relative">
               <Label className="text-sm">Password</Label>
-              <Input
-                type={showPassword ? "text" : "password"}
-                className="h-12 pr-12"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-                onClick={() => setShowPassword((p) => !p)}
-              >
-                {showPassword ? <EyeOff /> : <Eye />}
-              </button>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  className="h-12 pr-12 w-full text-base"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-3 flex items-center justify-center text-muted-foreground hover:text-gray-700"
+                  onClick={() => setShowPassword((p) => !p)}>
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
 
               <ul className="mt-2 space-y-1 text-xs">
                 {[
@@ -177,8 +181,9 @@ export default function RegisterForm() {
                 ].map(([text, valid]) => (
                   <li
                     key={text as string}
-                    className={valid ? "text-green-600" : "text-muted-foreground"}
-                  >
+                    className={
+                      valid ? "text-green-600" : "text-muted-foreground"
+                    }>
                     • {text}
                   </li>
                 ))}
@@ -188,29 +193,32 @@ export default function RegisterForm() {
             {/* Confirm Password */}
             <div className="space-y-2 relative">
               <Label className="text-sm">Confirm Password</Label>
-              <Input
-                type={showConfirmPassword ? "text" : "password"}
-                className="h-12 pr-12"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-                onClick={() => setShowConfirmPassword((p) => !p)}
-              >
-                {showConfirmPassword ? <EyeOff /> : <Eye />}
-              </button>
+              <div className="relative">
+                <Input
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="h-12 pr-12 w-full text-base"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-3 flex items-center justify-center text-muted-foreground hover:text-gray-700"
+                  onClick={() => setShowConfirmPassword((p) => !p)}>
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
             <Checkbox
               checked={termsChecked}
-              onCheckedChange={(checked) =>
-                setTermsChecked(Boolean(checked))
-              }
+              onCheckedChange={(checked) => setTermsChecked(Boolean(checked))}
               className="data-[state=checked]:bg-[#0946B1] data-[state=checked]:border-[#0946B1]"
             />
             <Label className="text-sm font-normal">
@@ -228,16 +236,11 @@ export default function RegisterForm() {
             onMouseOver={(e) =>
               (e.currentTarget.style.backgroundColor = BLUE_HOVER)
             }
-            onMouseOut={(e) =>
-              (e.currentTarget.style.backgroundColor = BLUE)
-            }
-          >
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = BLUE)}>
             Register
           </Button>
 
-          {message && (
-            <p className="text-center text-red-500">{message}</p>
-          )}
+          {message && <p className="text-center text-red-500">{message}</p>}
         </form>
       </CardContent>
     </Card>
